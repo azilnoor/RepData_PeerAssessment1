@@ -1,14 +1,9 @@
----
-title: 'Reproducible Research: Peer Assessment 1'
-output:
-  html_document:
-    keep_md: yes
-  pdf_document: default
----
+# Reproducible Research: Peer Assessment 1
 
 
 #Use ggplot
-```{r ggplot}
+
+```r
 library(ggplot2)
 ```
 
@@ -16,7 +11,8 @@ library(ggplot2)
 
 ## Loading and preprocessing the data
 
-```{r read csv}
+
+```r
 RRdata<-read.csv("activity.csv")
 ```
 
@@ -24,43 +20,75 @@ RRdata<-read.csv("activity.csv")
 
 ## What is mean total number of steps taken per day?
 
-```{r Total Number of Steps}
+
+```r
 total.steps <- tapply(RRdata$steps, RRdata$date, FUN = sum, na.rm = TRUE)
 qplot(total.steps, binwidth = 1000, xlab = "Total number of steps taken each day")
 ```
 
-```{r}
+![](PA1_template_files/figure-html/Total Number of Steps-1.png) 
+
+
+```r
 mean(total.steps, na.rm = TRUE)
+```
+
+```
+## [1] 9354.23
+```
+
+```r
 median(total.steps, na.rm = TRUE)
+```
+
+```
+## [1] 10395
 ```
 
 
 
 ## What is the average daily activity pattern?
 
-```{r Average Number of Steps}
+
+```r
 averages <- aggregate(x = list(steps = RRdata$steps), by = list(interval = RRdata$interval), 
     FUN = mean, na.rm = TRUE)
 ggplot(data = averages, aes(x = interval, y = steps)) + geom_line() + xlab("5 minutes interval") + 
     ylab("Average number of steps taken")
 ```
+
+![](PA1_template_files/figure-html/Average Number of Steps-1.png) 
    
-```{r} 
+
+```r
 averages[which.max(averages$steps),]
+```
+
+```
+##     interval    steps
+## 104      835 206.1698
 ```
 
 
 ## Imputing missing values
 To handle with missing values labels as NA.
 
-```{r}
+
+```r
 missingV <- is.na(RRdata$steps)
 # How many NA's
 table(missingV)
 ```
 
+```
+## missingV
+## FALSE  TRUE 
+## 15264  2304
+```
+
 Which later the missing values are replaced with the mean value for 5 minutes interval
-```{r}
+
+```r
 # Replace each missing value with the mean value of its 5 minutes interval
 fill.value <- function(steps, interval) {
     filled <- NA
@@ -74,14 +102,29 @@ filled.data$steps <- mapply(fill.value, filled.data$steps, filled.data$interval)
 
 Using the replaced values for NA, the histogram of the total number of steps taken each day and the mean and median total number of steps are calculated.
 
-```{r Total Number of Steps after NAs replaced}
+
+```r
 total.steps <- tapply(filled.data$steps, filled.data$date, FUN = sum)
 qplot(total.steps, binwidth = 1000, xlab = "Total number of steps taken each day")
 ```
 
-```{r}
+![](PA1_template_files/figure-html/Total Number of Steps after NAs replaced-1.png) 
+
+
+```r
 mean(total.steps)
+```
+
+```
+## [1] 10766.19
+```
+
+```r
 median(total.steps)
+```
+
+```
+## [1] 10766.19
 ```
 
 Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
@@ -94,7 +137,8 @@ Mean and median values are definitely higher after imputing missing data (replac
 
 For this question, we use the dataset with the filled-in values.
 
-```{r}
+
+```r
 weekday.or.weekend <- function(date) {
     day <- weekdays(date)
     if (day %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")) 
@@ -107,9 +151,12 @@ filled.data$day <- sapply(filled.data$date, FUN = weekday.or.weekend)
 
 Panel plot containing plots of average number of steps taken on weekdays and weekends.
 
-```{r Number of Steps}
+
+```r
 averages <- aggregate(steps ~ interval + day, data = filled.data, mean)
 ggplot(averages, aes(interval, steps)) + geom_line(color="firebrick") + facet_grid(day ~ .) + 
     xlab("5 minutes interval") + ylab("Number of steps") +geom_point(color="firebrick")+
   theme(panel.background = element_rect(fill = 'grey75'))
 ```
+
+![](PA1_template_files/figure-html/Number of Steps-1.png) 
