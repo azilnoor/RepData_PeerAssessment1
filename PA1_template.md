@@ -160,4 +160,4 @@ ggplot(averages, aes(interval, steps)) + geom_line(color="firebrick") + facet_gr
   theme(panel.background = element_rect(fill = 'grey75'))
 ```
 
-![](PA1_template_files/figure-html/Number of Steps-1.png) 
+![](PA1_template_files/figure-html/Number of Steps by Weekday & Weekend-1.png) 

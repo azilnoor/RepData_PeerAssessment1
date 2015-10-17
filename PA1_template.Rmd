@@ -108,7 +108,7 @@ filled.data$day <- sapply(filled.data$date, FUN = weekday.or.weekend)
 
 Panel plot containing plots of average number of steps taken on weekdays and weekends.
 
-```{r Number of Steps}
+```{r Number of Steps by Weekday & Weekend}
 averages <- aggregate(steps ~ interval + day, data = filled.data, mean)
 ggplot(averages, aes(interval, steps)) + geom_line(color="firebrick") + facet_grid(day ~ .) + 
     xlab("5 minutes interval") + ylab("Number of steps") +geom_point(color="firebrick")+
