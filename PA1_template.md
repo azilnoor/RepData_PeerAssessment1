@@ -1,9 +1,10 @@
 # Reproducible Research: Peer Assessment 1
 
 
-#Use ggplot
+Use ggplot
 
 ```r
+#use ggplot
 library(ggplot2)
 ```
 

@@ -7,8 +7,9 @@ output:
 ---
 
 
-#Use ggplot
+Use ggplot
 ```{r ggplot}
+#use ggplot
 library(ggplot2)
 ```
 
